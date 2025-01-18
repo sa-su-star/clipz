@@ -15,7 +15,7 @@ export class UploadComponent implements OnInit {
   uploadForm = new FormGroup({
     title: this.title
   })
-  constructor( private cloudinaryService: CloudinaryUploadFileService) { }
+  constructor(private cloudinaryService: CloudinaryUploadFileService) { }
 
   ngOnInit(): void {
   }
@@ -33,18 +33,30 @@ export class UploadComponent implements OnInit {
     this.nextStep = true;
   }
   uploadFile() {
-    if (!this.file) {
-      console.error('No file selected');
-      return;
+    if (this.file) {
+      this.cloudinaryService.uploadFile(this.file).subscribe(
+        event => {
+          console.log(event);
+        },
+        error => {
+          console.error(error);
+        }
+      );
     }
-
-    this.cloudinaryService.uploadFile(this.file)
-      .then((fileUrl) => {
-        console.log('File uploaded successfully:', fileUrl);
-        // You can now save the fileUrl to your database or use it as needed
-      })
-      .catch((error) => {
-        console.error('Error uploading file:', error);
-      });
   }
+  // uploadFile() {
+  //   if (!this.file) {
+  //     console.error('No file selected');
+  //     return;
+  //   }
+
+  //   this.cloudinaryService.uploadFile(this.file)
+  //     .then((fileUrl) => {
+  //       console.log('File uploaded successfully:', fileUrl);
+  //       // You can now save the fileUrl to your database or use it as needed
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error uploading file:', error);
+  //     });
+  // }
 }

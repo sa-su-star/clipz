@@ -14,12 +14,10 @@ import { VideoModule } from './video/video.module';
 import { ClipComponent } from './clip/clip.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-
-// Import Cloudinary modules
-// import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-5.x';
 import { CloudinaryModule } from '@cloudinary/angular-5.x';
 import { Cloudinary } from '@cloudinary/url-gen';
-
+import { HttpClientModule } from '@angular/common/http';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +31,7 @@ import { Cloudinary } from '@cloudinary/url-gen';
     BrowserModule,
     VideoModule,
     UserModule,
+    HttpClientModule,
     // Initialize Firebase with environment configuration
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,

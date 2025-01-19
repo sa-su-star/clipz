@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { v4 as uuid } from 'uuid'
-import { CloudinaryUploadFileService } from '../cloudinary-upload-file-service';
+import { AppwriteService } from '../appwrite-upload-file-service';
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -15,9 +15,11 @@ export class UploadComponent implements OnInit {
   uploadForm = new FormGroup({
     title: this.title
   })
-  constructor(private cloudinaryService: CloudinaryUploadFileService) { }
+  videos: any;
+  constructor(private appwriteService: AppwriteService) { }
 
   ngOnInit(): void {
+    this.fetchVideos();
   }
   storeFile(event: Event) {
     this.isDragOver = false;
@@ -34,7 +36,7 @@ export class UploadComponent implements OnInit {
   }
   uploadFile() {
     if (this.file) {
-      this.cloudinaryService.uploadFile(this.file).subscribe(
+      this.appwriteService.uploadVideo(this.file).then(
         event => {
           console.log(event);
         },
@@ -44,19 +46,10 @@ export class UploadComponent implements OnInit {
       );
     }
   }
-  // uploadFile() {
-  //   if (!this.file) {
-  //     console.error('No file selected');
-  //     return;
-  //   }
 
-  //   this.cloudinaryService.uploadFile(this.file)
-  //     .then((fileUrl) => {
-  //       console.log('File uploaded successfully:', fileUrl);
-  //       // You can now save the fileUrl to your database or use it as needed
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error uploading file:', error);
-  //     });
-  // }
+  fetchVideos(): void {
+    this.appwriteService.listFiles().then(files => {
+      console.log('Files in bucket:', files);
+    });
+  }
 }
